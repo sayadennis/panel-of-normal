@@ -2,13 +2,13 @@
 #SBATCH -A b1042
 #SBATCH -p genomicslong
 #SBATCH -n 1
-#SBATCH --array=0-2
+#SBATCH --array=0-19
 #SBATCH -t 168:00:00
-#SBATCH --mem=5G
+#SBATCH --mem=168G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH --job-name="pon_%a"
-#SBATCH --output=bbcar/out/generate_pon_bbcar_%a.out
+#SBATCH --output=/projects/b1131/saya/panel-of-normal/out/generate_pon_step2and3_%a.out
 
 cd /projects/b1131/saya/panel-of-normal/
 
@@ -25,7 +25,7 @@ interval='/projects/b1122/gannon/bbcar/RAW_data/int_lst/SureSelect_v6/hg38.prepr
 ref='/projects/p30791/hg38_ref/hg38.fa'
 
 # Define input arguments for job array 
-IFS=$'\n' read -d '' -r -a flist <<< "$(ls -1 ${samplesetdir}/development_subset_*-1.txt)"
+IFS=$'\n' read -d '' -r -a flist <<< "$(ls -1 ${samplesetdir}/development_subset_*.txt)"
 subsetids_fn=${flist[${SLURM_ARRAY_TASK_ID}]}
 
 IFS='/' read -ra subsetid <<< "${subsetids_fn}"
@@ -53,5 +53,8 @@ gatk CreateSomaticPanelOfNormals \
     -R $ref \
     --output ${dout}/pon_${subsetid}.vcf.gz
 #
+
+# Remove intermediate files 
+rm -r ${tmpdir}/${subsetid}/*
 
 # --germline-resource /projects/b1131/saya/bbcar/genome_resources/GATK/af-only-gnomad.hg38.vcf.gz 

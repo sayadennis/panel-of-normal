@@ -32,8 +32,8 @@ with open(f'{dn}/evaluation.txt', 'w') as f:
 
 # generate dev set subsamples with different sizes 
 subsets = {}
-for size in [5, 10, 20]:
-    for seed in [1,2]:
+for size in [5, 10, 20, 30, 40]:
+    for seed in [1,2,3,4]:
         np.random.seed(seed)
         subsets[f'{size}-{seed}'] = list(np.random.choice(dev_set, size, replace=False))
 
