@@ -48,6 +48,10 @@ gatk GenomicsDBImport -R $ref -L $interval \
 
 # Step 3: Combine the normal calls using CreateSomaticPanelOfNormals:
 cd ${tmpdir}/${subsetid}/
+if [ ! -d ${tmpdir}/${subsetid}/pon_db ]; then
+  rm -r ${tmpdir}/${subsetid}/pon_db;
+fi
+
 gatk CreateSomaticPanelOfNormals \
     -V gendb://pon_db \
     -R $ref \
