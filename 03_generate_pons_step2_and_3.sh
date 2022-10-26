@@ -2,9 +2,9 @@
 #SBATCH -A b1042
 #SBATCH -p genomicslong
 #SBATCH -n 1
-#SBATCH --array=0-19
+#SBATCH --array=2
 #SBATCH -t 168:00:00
-#SBATCH --mem=168G
+#SBATCH --mem=48G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH --job-name="pon_%a"
@@ -58,7 +58,7 @@ gatk CreateSomaticPanelOfNormals \
     --output ${dout}/pon_${subsetid}.vcf.gz
 #
 
-# Remove intermediate files 
-rm -r ${tmpdir}/${subsetid}/*
+# Remove intermediate directory entirely 
+rm -r ${tmpdir}/${subsetid}/
 
 # --germline-resource /projects/b1131/saya/bbcar/genome_resources/GATK/af-only-gnomad.hg38.vcf.gz 
