@@ -2,9 +2,9 @@
 #SBATCH -A b1042
 #SBATCH -p genomicslong
 #SBATCH -n 1
-#SBATCH --array=2
-#SBATCH -t 168:00:00
-#SBATCH --mem=48G
+#SBATCH --array=6
+#SBATCH -t 144:00:00
+#SBATCH --mem=90G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH --job-name="pon_%a"
@@ -44,7 +44,7 @@ rm -r ${tmpdir}/${subsetid}/*
 gatk GenomicsDBImport -R $ref -L $interval \
     --tmp-dir ${tmpdir}/${subsetid}/ \
     --genomicsdb-workspace-path ${tmpdir}/${subsetid}/pon_db \
-    $(for x in $(cat ${subsetids_fn}); do echo -n "-V ${tmpdir}/mutect/${x}_bqsr.vcf.gz "; done)
+    $(for x in $(cat ${subsetids_fn}); do echo -n "-V /projects/b1131/saya/panel-of-normal/02_pon/mutect/${x}_bqsr.vcf.gz "; done)
 
 # Step 3: Combine the normal calls using CreateSomaticPanelOfNormals:
 cd ${tmpdir}/${subsetid}/
