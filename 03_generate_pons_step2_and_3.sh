@@ -2,9 +2,9 @@
 #SBATCH -A b1042
 #SBATCH -p genomicslong
 #SBATCH -n 1
-#SBATCH --array=6
-#SBATCH -t 144:00:00
-#SBATCH --mem=90G
+#SBATCH --array=14
+#SBATCH -t 240:00:00
+#SBATCH --mem=180G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH --job-name="pon_%a"
