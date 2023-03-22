@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH -A b1042
-#SBATCH -p genomics
+#SBATCH -A p30791
+#SBATCH -p short
 #SBATCH --array=0-51
 #SBATCH -n 1
-#SBATCH -t 2:00:00
-#SBATCH --mem=5G
+#SBATCH -t 1:00:00
+#SBATCH --mem=1G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
-#SBATCH --job-name="dpfilter_tn_%a"
+#SBATCH --job-name="dpfilt_pon_%a"
 #SBATCH --output=/projects/b1131/saya/panel-of-normal/out/DPfilter_%a.out
 
 cd /projects/b1131/saya/panel-of-normal/
@@ -30,7 +30,7 @@ for pon_num in 5 10 20 30 40; do
         din=/projects/b1131/saya/panel-of-normal/03_variant_calls/${pon_num}-${rep_num}
         dout=/projects/b1131/saya/panel-of-normal/04_filtered_variants/${pon_num}-${rep_num}
         mkdir -p ${dout}
-        bcftools filter --include "INFO/DP>=20" --output-type v --output $dout/${input_args[$SLURM_ARRAY_TASK_ID]}_DPfiltered_bbcarpon.vcf $din/${input_args[$SLURM_ARRAY_TASK_ID]}_filtered_bbcarpon.vcf
+        bcftools filter --include "INFO/DP>=20" --output-type v --output ${dout}/${input_args[$SLURM_ARRAY_TASK_ID]}_DPfiltered_bbcarpon.vcf ${din}/${input_args[$SLURM_ARRAY_TASK_ID]}_filtered_bbcarpon.vcf
     done
 done
 

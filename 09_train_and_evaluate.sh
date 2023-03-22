@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH -A b1042
-#SBATCH -p genomics
+#SBATCH -A p30791
+#SBATCH -p normal
 #SBATCH -t 48:00:00
-#SBATCH --array=0-14
+#SBATCH --array=9
 #SBATCH -N 1
 #SBATCH -n 8
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
@@ -22,8 +22,8 @@ IFS=$'\n' read -d '' -r -a input_args < /projects/b1131/saya/panel-of-normal/inp
 inputdir=/projects/b1131/saya/panel-of-normal/06_ml_features/${input_args[$SLURM_ARRAY_TASK_ID]}
 labeldir=/projects/b1131/saya/panel-of-normal/06_ml_features/${input_args[$SLURM_ARRAY_TASK_ID]}
 ixdir=/projects/b1131/saya/panel-of-normal/06_ml_features/${input_args[$SLURM_ARRAY_TASK_ID]}/somatic_pred_ix
-outdir=/projects/b1131/saya/panel-of-normal/06_ml_features/${input_args[$SLURM_ARRAY_TASK_ID]}/model_interpretations
-modeldir=/projects/b1131/saya/panel-of-normal/06_ml_features/${input_args[$SLURM_ARRAY_TASK_ID]}/models
+outdir=/projects/b1131/saya/panel-of-normal/07_ml_eval/${input_args[$SLURM_ARRAY_TASK_ID]}/model_interpretations
+modeldir=/projects/b1131/saya/panel-of-normal/07_ml_eval/${input_args[$SLURM_ARRAY_TASK_ID]}/models
 
 mkdir -p $outdir
 mkdir -p $modeldir

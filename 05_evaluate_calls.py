@@ -62,55 +62,55 @@ for pon_num in [5,10,20,30,40]:
             )
         ), axis=0)
 
-fig, ax = plt.subplots(nrows=1, ncols=4, figsize=(12,6))
+fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(12,6))
 
-## F1 score 
+# ## F1 score 
+# ax[0].bar(
+#     x=np.arange(len(performance['PON'].unique())),
+#     height=[np.mean(performance['F1'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
+#     yerr=[np.std(performance['F1'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
+# )
+# ax[0].set_xticks(np.arange(len(performance['PON'].unique())))
+# ax[0].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
+# ax[0].set_ylabel('F1 score')
+# ax[0].set_title('F1 Score')
+
+## Calls that are somatic 
 ax[0].bar(
-    x=np.arange(len(performance['PON'].unique())),
-    height=[np.mean(performance['F1'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
-    yerr=[np.std(performance['F1'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
-)
-ax[0].set_xticks(np.arange(len(performance['PON'].unique())))
-ax[0].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
-ax[0].set_ylabel('F1 score')
-ax[0].set_title('F1 Score')
-
-## True positive counts
-ax[1].bar(
     x=np.arange(len(performance['PON'].unique())),
     height=[np.mean(performance['TP'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
     yerr=[np.std(performance['TP'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
 )
-ax[1].set_xticks(np.arange(len(performance['PON'].unique())))
-ax[1].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
-ax[1].set_ylabel('Number of calls')
-ax[1].set_ylim([np.min(performance['TP'])*0.99, np.max(performance['TP']*1.01)])
-ax[1].set_title('Correct Calls (True Positives)')
+ax[0].set_xticks(np.arange(len(performance['PON'].unique())))
+ax[0].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
+ax[0].set_ylabel('Number of calls')
+ax[0].set_ylim([np.min(performance['TP'])*0.99, np.max(performance['TP']*1.01)])
+ax[0].set_title('Somatic variants called')
 
-## False positive counts
-ax[2].bar(
+## Calls that are not somatic
+ax[1].bar(
     x=np.arange(len(performance['PON'].unique())),
     height=[np.mean(performance['FP'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
     yerr=[np.std(performance['FP'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
 )
-ax[2].set_xticks(np.arange(len(performance['PON'].unique())))
-ax[2].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
-ax[2].set_ylabel('Number of calls')
-ax[2].set_title('Incorrectly Called (False Positives)')
+ax[1].set_xticks(np.arange(len(performance['PON'].unique())))
+ax[1].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
+ax[1].set_ylabel('Number of calls')
+ax[1].set_title('Non-somatic variants called')
 
 ## False negative counts
-ax[3].bar(
+ax[2].bar(
     x=np.arange(len(performance['PON'].unique())),
     height=[np.mean(performance['FN'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
     yerr=[np.std(performance['FN'].iloc[performance['PON'].values==x]) for x in [5,10,20,30,40]],
 )
-ax[3].set_xticks(np.arange(len(performance['PON'].unique())))
-ax[3].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
-ax[3].set_ylabel('Number of calls')
-ax[3].set_ylim([np.min(performance['FN'])*0.98, np.max(performance['FN']*1.02)])
-ax[3].set_title('Incorrectly Not Called (False Negatives)')
+ax[2].set_xticks(np.arange(len(performance['PON'].unique())))
+ax[2].set_xticklabels([f'{int(x)} samples' for x in performance['PON'].unique()], rotation=45, ha='right')
+ax[2].set_ylabel('Number of calls')
+ax[2].set_ylim([np.min(performance['FN'])*0.98, np.max(performance['FN']*1.02)])
+ax[2].set_title('Somatic variants NOT called')
 
-fig.suptitle('Somatic Prediction Performance by Number of Samples in PoN', fontsize=16)
+fig.suptitle('Comparing Called Variants by PoN Size', fontsize=16)
 plt.tight_layout()
 fig.savefig(f'{dout}/prelim_performance.png')
 plt.close()
