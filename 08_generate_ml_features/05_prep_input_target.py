@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import pandas as pd
+import subprocess
 from sklearn.model_selection import train_test_split
 
 for pon_num in [5, 10, 20, 30, 40]:
@@ -27,11 +28,34 @@ for pon_num in [5, 10, 20, 30, 40]:
 
         data = pd.read_csv(f'{din}/features_imputed.csv')
 
+        ##################################################
+        #### Obtain labels from tumor-normal VCF file ####
+        ##################################################
+
+        data['somatic'] = None
+
+        tumor_normal_calls_dn = '/projects/b1131/saya/bbcar/data/02a_mutation/02_variant_calls/tumor_normal'
+
+        for i in data.index:
+            sample_id = data.loc[i,'sample_id']
+            chrom = data.loc[i,'var_id'].split('_')[0]
+            pos = data.loc[i,'var_id'].split('_')[1]
+            ref_allele = data.loc[i,'var_id'].split('_')[2]
+            alt_allele = data.loc[i,'var_id'].split('_')[3]
+            somatic_calls_fn = f'{tumor_normal_calls_dn}/{sample_id}_DPfiltered_bbcarpon.vcf'
+            syscommand = f'grep {pos} {somatic_calls_fn}'
+            try:
+                var_presence = subprocess.check_output(syscommand.split())
+                if (f'{chrom}\t{pos}\t.\t{ref_allele}\t{alt_allele}' in var_presence.decode('utf-8')):
+                    data.loc[i,'somatic'] = 1
+                else:
+                    data.loc[i,'somatic'] = 0
+            except:
+                data.loc[i,'somatic'] = 0
+
         #####################################
         #### Convert to input and target ####
         #####################################
-
-        data['somatic'] = (data.source=='tumor_normal').astype(int)
 
         variables=[
             'var_id',
@@ -66,10 +90,10 @@ for pon_num in [5, 10, 20, 30, 40]:
             'somatic'
         ]
 
-        Xy_nonmatched = data.iloc[data.source.values=='tumor_only',:][variables].drop_duplicates(ignore_index=True).set_index('var_id', drop=True)
-        X_nonmatched = Xy_nonmatched.iloc[:,:-1]
+        # Xy_nonmatched = data.iloc[data.source.values=='tumor_only',:][variables].drop_duplicates(ignore_index=True).set_index('var_id', drop=True)
+        # X_nonmatched = Xy_nonmatched.iloc[:,:-1]
 
-        Xy_matched = data.iloc[data.source.values!='tumor_only',:][variables].drop_duplicates(ignore_index=True).set_index('var_id', drop=True)
+        Xy_matched = data[variables].drop_duplicates(ignore_index=True).set_index('var_id', drop=True)
         X_matched = Xy_matched.iloc[:,:-1]
         y_matched = Xy_matched.iloc[:,-1]
 

@@ -7,7 +7,7 @@ import pandas as pd
 #### Get input arguments (sample info) ####
 ###########################################
 
-source = 'tumor_normal'
+source = 'tumor_only'
 sample_id = sys.argv[1]
 annovar_filename = f'{sample_id}_bbcarpon.hg38_multianno.vcf'
 

@@ -16,7 +16,7 @@ module load python-miniconda3/4.12.0
 
 source activate pon
 
-cd ${HOME}/panel-of-normal/07_generate_ml_features/
+cd ${HOME}/panel-of-normal/08_generate_ml_features/
 
 ## Define input arguments for job array 
 IFS=$'\n' read -d '' -r -a input_args < /projects/b1131/saya/bbcar/data/02a_mutation/sample_names_tumor_normal.txt

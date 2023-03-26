@@ -3,8 +3,8 @@
 #SBATCH -p genomics
 #SBATCH -N 1
 #SBATCH -n 1
-#SBATCH -t 8:00:00
-#SBATCH --mem=5G
+#SBATCH -t 48:00:00
+#SBATCH --mem=10G
 #SBATCH --mail-user=sayarenedennis@northwestern.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH --job-name=restml
@@ -15,12 +15,12 @@ module load python-miniconda3/4.12.0
 
 source activate pon
 
-cd ${HOME}/panel-of-normal/07_generate_ml_features/
+cd ${HOME}/panel-of-normal/08_generate_ml_features/
 
-python 02_concatenate_annovar_features.py
+# python 02_concatenate_annovar_features.py
 
-python 03_calculate_bbcar_freq.py
+# python 03_calculate_bbcar_freq.py
 
-python 04_impute_missing.py
+# python 04_impute_missing.py
 
 python 05_prep_input_target.py
