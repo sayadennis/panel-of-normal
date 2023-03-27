@@ -32,7 +32,7 @@ for pon_num in [5, 10, 20, 30, 40]:
         #### Obtain labels from tumor-normal VCF file ####
         ##################################################
 
-        data['somatic'] = None
+        data['label'] = None
 
         tumor_normal_calls_dn = '/projects/b1131/saya/bbcar/data/02a_mutation/02_variant_calls/tumor_normal'
 
@@ -47,11 +47,11 @@ for pon_num in [5, 10, 20, 30, 40]:
             try:
                 var_presence = subprocess.check_output(syscommand.split())
                 if (f'{chrom}\t{pos}\t.\t{ref_allele}\t{alt_allele}' in var_presence.decode('utf-8')):
-                    data.loc[i,'somatic'] = 1
+                    data.loc[i,'label'] = 1
                 else:
-                    data.loc[i,'somatic'] = 0
+                    data.loc[i,'label'] = 0
             except:
-                data.loc[i,'somatic'] = 0
+                data.loc[i,'label'] = 0
 
         #####################################
         #### Convert to input and target ####
@@ -87,7 +87,7 @@ for pon_num in [5, 10, 20, 30, 40]:
             'phyloP20way_mammalian',
             'phyloP100way_vertebrate',
             'SiPhy_29way_logOdds',
-            'somatic'
+            'label'
         ]
 
         # Xy_nonmatched = data.iloc[data.source.values=='tumor_only',:][variables].drop_duplicates(ignore_index=True).set_index('var_id', drop=True)
